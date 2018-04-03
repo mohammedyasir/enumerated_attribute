@@ -2,7 +2,11 @@ require 'rubygems'
 
 gem 'activerecord', ENV['AR_VERSION'] ? "=#{ENV['AR_VERSION']}" : '>=2.1.0'
 require 'active_record'
-require 'active_support/core_ext/logger' rescue nil  # rails3
+begin
+  require 'active_support/core_ext/logger'  # rails3
+rescue LoadError
+  nil
+end
 
 require 'enumerated_attribute'
 

@@ -67,23 +67,23 @@ describe "RaceCar" do
 	end
 
   it "should be created and found with dynamic find or creator method" do
-    s = RaceCar.find_or_create_by_name_and_gear('specialty', :second)
+    s = RaceCar.find_or_create_by(name: 'specialty', gear: :second)
     s.should_not be_nil
     s.gear.should == :second
     s.name.should == 'specialty'
 
-    s0 = RaceCar.find_or_create_by_name_and_gear('specialty', :second)
+    s0 = RaceCar.find_or_create_by(name: 'specialty', gear: :second)
     s0.gear.should == :second
     s0.id.should == s.id
   end
   it "should be initialized with dynamic find or initialize method" do
-    s = RaceCar.find_or_initialize_by_name_and_gear('myspecialty', :second)
+    s = RaceCar.find_or_create_by(name: 'myspecialty', gear: :second)
     s.should_not be_nil
     s.gear.should == :second
     s.name.should == 'myspecialty'
     lambda { s.save! }.should_not raise_exception
 
-    s0 = RaceCar.find_or_initialize_by_name_and_gear('myspecialty', :second)
+    s0 = RaceCar.find_or_create_by(name: 'myspecialty', gear: :second)
     s0.gear.should == :second
     s0.id.should == s.id
   end
