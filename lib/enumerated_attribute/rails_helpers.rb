@@ -1,36 +1,36 @@
 require 'active_record/connection_adapters/abstract/schema_definitions'
 
 if defined?(ActiveRecord)
-	module ActiveRecord
-		module ConnectionAdapters
-			class TableDefinition
-				def column_with_enumerated_attribute(name, type, options = {})
-					type = 'string' if type.to_s == 'enum'
-					column_without_enumerated_attribute(name, type, options)
-				end
-				safe_alias_method_chain :column, :enumerated_attribute
-				
-				def enum(*args)
-					options = args.extract_options!                                      
-					column_names = args                                                   
-					column_names.each { |name| column(name, 'string', options) }  
-				end
-			end
-			class Table
-				def column_with_enumerated_attribute(name, type, options = {})
-					type = 'string' if type.to_s == 'enum'
-					column_without_enumerated_attribute(name, type, options)
-				end
-				safe_alias_method_chain :column, :enumerated_attribute
-				
-				def enum(*args)
-					options = args.extract_options!                                      
-					column_names = args                                                   
-					column_names.each { |name| column(name, 'string', options) }  
-				end
-			end
-		end
-	end
+  module ActiveRecord
+    module ConnectionAdapters
+      class TableDefinition
+        def column_with_enumerated_attribute(name, type, options = {})
+          type = 'string' if type.to_s == 'enum'
+          column_without_enumerated_attribute(name, type, index: options[:index], **options)
+        end
+        safe_alias_method_chain :column, :enumerated_attribute
+
+        def enum(*args)
+          options = args.extract_options!
+          column_names = args
+          column_names.each { |name| column(name, 'string', index: options[:index], **options) }
+        end
+      end
+      class Table
+        def column_with_enumerated_attribute(name, type, options = {})
+          type = 'string' if type.to_s == 'enum'
+          column_without_enumerated_attribute(name, type, index: options[:index], **options)
+        end
+        safe_alias_method_chain :column, :enumerated_attribute
+
+        def enum(*args)
+          options = args.extract_options!
+          column_names = args
+          column_names.each { |name| column(name, 'string', index: options[:index], **options) }
+        end
+      end
+    end
+  end
 end
 
 #ARGV is used by generators -- if it contains one of these generator commands - add enumeration support
